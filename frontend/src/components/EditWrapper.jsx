@@ -81,7 +81,7 @@ export default function EditWrapper(props) {
         try {
             // If we're editing a published blog, create a draft version
             if (props.editData?.status === 'published' && !draftId) {
-                const response = await axios.post('http://localhost:5000/api/blog/save-draft', {
+                const response = await axios.post('https://blog-maker-vercel-backend.vercel.app/api/blog/save-draft', {
                     ...data,
                     originalBlogId: props.blogId // Connect to original published blog
                 });
@@ -92,11 +92,11 @@ export default function EditWrapper(props) {
             }
             // If we already have a draft ID, update it
             else if (draftId) {
-                await axios.patch(`http://localhost:5000/api/blog/update/${draftId}`, data);
+                await axios.patch(`https://blog-maker-vercel-backend.vercel.app/api/blog/update/${draftId}`, data);
             }
             // If we're editing an existing draft, update it
             else if (props.blogId) {
-                await axios.patch(`http://localhost:5000/api/blog/update/${props.blogId}`, data);
+                await axios.patch(`https://blog-maker-vercel-backend.vercel.app/api/blog/update/${props.blogId}`, data);
             }
 
             // Show toast notification for auto-save
@@ -153,13 +153,13 @@ export default function EditWrapper(props) {
         }
 
         try {
-            const response = await axios.patch(`http://localhost:5000/api/blog/update/${props.blogId}`, data);
+            const response = await axios.patch(`https://blog-maker-vercel-backend.vercel.app/api/blog/update/${props.blogId}`, data);
 
             if (response.data.status === 1) {
                 // If publishing, remove any auto-saved drafts
                 if (status === 'published' && draftId && draftId !== props.blogId) {
                     try {
-                        await axios.delete(`http://localhost:5000/api/blog/delete-draft/${draftId}`);
+                        await axios.delete(`https://blog-maker-vercel-backend.vercel.app/api/blog/delete-draft/${draftId}`);
                     } catch (error) {
                         console.error("Error removing draft after publishing:", error);
                     }
