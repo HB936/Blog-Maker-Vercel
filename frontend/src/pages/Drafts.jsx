@@ -19,7 +19,7 @@ export default function Drafts() {
     };
 
     const deleteHandler = (id) => {
-        axios.delete(`https://blog-maker-vercel.vercel.app/api/blog/delete/${id}`)
+        axios.delete(`https://blog-maker-vercel-backend.vercel.app/api/blog/delete/${id}`)
             .then((success) => {
                 if (success.data.status == 1) {
                     fetchDrafts();
@@ -32,7 +32,7 @@ export default function Drafts() {
     };
 
     const fetchDrafts = () => {
-        axios.get("https://blog-maker-vercel.vercel.app/api/blog")
+        axios.get("https://blog-maker-vercel-backend.vercel.app/api/blog")
             .then((success) => {
                 if (success.data.status == 1) {
                     const draftBlogs = success.data.blogs.filter(blog => blog.status === 'draft');
