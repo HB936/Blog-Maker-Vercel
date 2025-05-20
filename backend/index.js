@@ -8,7 +8,7 @@ const server = express();
 // Middleware
 server.use(express.json());
 server.use(cors({
-  origin: ['http://localhost:5173'] // Add your frontend domain if needed
+  origin: ['https://blog-maker-vercel.vercel.app'] // Add your frontend domain if needed
 }));
 
 // MongoDB connection string directly in code (not recommended for production but will work)
