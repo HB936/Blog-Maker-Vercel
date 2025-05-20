@@ -102,89 +102,71 @@ export default function Home() {
 
 function BlogTable(props) {
     return (
-        <div className="max-w-6xl mx-auto mt-8">
-            <div className="overflow-hidden border rounded-lg shadow">
-                <table className="w-full table-fixed border-collapse">
-                    <thead>
-                        <tr className="bg-gray-200 text-gray-700 uppercase text-sm leading-normal">
-                            <th className="py-3 px-2 text-left w-24 md:w-32">Title</th>
-                            <th className="py-3 px-2 text-left w-64 md:w-80">Content</th>
-                            <th className="py-3 px-2 text-left w-32">Tags</th>
-                            <th className="py-3 px-2 text-left w-20">Status</th>
-                            <th className="py-3 px-2 text-left w-24">Created</th>
-                            <th className="py-3 px-2 text-left w-24">Updated</th>
-                            <th className="py-3 px-2 text-left w-32">Actions</th>
-                        </tr>
-                    </thead>
-                    <tbody className="text-gray-600 text-sm">
-                        {props.blogs.length === 0 ? (
-                            <tr>
-                                <td colSpan="7" className="text-center py-6">
-                                    No blogs found.
-                                </td>
-                            </tr>
-                        ) : (
-                            props.blogs.map((blog) => (
-                                <tr
-                                    key={blog._id}
-                                    className="border-b border-gray-200 hover:bg-gray-100"
-                                >
-                                    <td className="py-2 px-2 align-top">
-                                        <div className="w-full overflow-hidden break-words">
-                                            {blog.title}
-                                        </div>
-                                    </td>
-                                    <td className="py-2 px-2 align-top">
-                                        <div className="w-full max-h-60 overflow-y-auto whitespace-normal break-words">
+        <div className="container mx-auto mt-8 px-4">
+            {props.blogs.length === 0 ? (
+                <div className="text-center py-6 bg-white shadow rounded">
+                    No blogs found.
+                </div>
+            ) : (
+                <div className="grid grid-cols-1 gap-4">
+                    {props.blogs.map((blog) => (
+                        <div key={blog._id} className="bg-white shadow rounded p-4 border-l-4 border-blue-500">
+                            <div className="grid grid-cols-1 md:grid-cols-12 gap-4">
+                                {/* Left Column - Blog Info */}
+                                <div className="md:col-span-9">
+                                    <h3 className="font-bold text-lg mb-2">{blog.title}</h3>
+                                    
+                                    <div className="mb-4">
+                                        <div className="font-semibold text-sm text-gray-700 mb-1">Content:</div>
+                                        <div className="bg-gray-50 p-3 rounded max-h-60 overflow-y-auto break-words whitespace-pre-wrap">
                                             {blog.content}
                                         </div>
-                                    </td>
-                                    <td className="py-2 px-2 align-top">
-                                        <div className="w-full overflow-hidden break-words">
-                                            {Array.isArray(blog.tags) ? blog.tags.join(', ') : blog.tags}
+                                    </div>
+                                    
+                                    <div className="grid grid-cols-1 md:grid-cols-3 gap-2 text-sm">
+                                        <div>
+                                            <span className="font-semibold text-gray-700">Tags: </span>
+                                            <span>{Array.isArray(blog.tags) ? blog.tags.join(', ') : blog.tags}</span>
                                         </div>
-                                    </td>
-                                    <td className="py-2 px-2 align-top">
-                                        <div className="w-full overflow-hidden">
-                                            {blog.status}
+                                        <div>
+                                            <span className="font-semibold text-gray-700">Status: </span>
+                                            <span>{blog.status}</span>
                                         </div>
-                                    </td>
-                                    <td className="py-2 px-2 align-top">
-                                        <div className="w-full overflow-hidden">
-                                            {new Date(blog.createdAt).toLocaleDateString()}
+                                        <div>
+                                            <span className="font-semibold text-gray-700">Created: </span>
+                                            <span>{new Date(blog.createdAt).toLocaleDateString()}</span>
                                         </div>
-                                    </td>
-                                    <td className="py-2 px-2 align-top">
-                                        <div className="w-full overflow-hidden">
-                                            {new Date(blog.updatedAt).toLocaleDateString()}
-                                        </div>
-                                    </td>
-                                    <td className="py-2 px-2 align-top">
-                                        <div className="flex flex-col md:flex-row gap-2">
-                                            <button
-                                                onClick={() => {
-                                                    props.setEditWindow(true);
-                                                    props.setEditData(blog);
-                                                    props.setBlogId(blog._id);
-                                                }}
-                                                className='bg-blue-200 p-2 rounded cursor-pointer text-center'
-                                            >
-                                                Edit
-                                            </button>
-                                            <button
-                                                onClick={() => props.deleteHandler(blog._id)}
-                                                className='bg-red-200 p-2 rounded cursor-pointer text-center'
-                                            >
-                                                Delete
-                                            </button>
-                                        </div>
-                                    </td>
-                                </tr>
-                            ))
-                        )}
-                    </tbody>
-                </table>
-            </div>
+                                    </div>
+                                    <div className="text-sm mt-2">
+                                        <span className="font-semibold text-gray-700">Updated: </span>
+                                        <span>{new Date(blog.updatedAt).toLocaleDateString()}</span>
+                                    </div>
+                                </div>
+                                
+                                {/* Right Column - Actions */}
+                                <div className="md:col-span-3 flex md:flex-col justify-end gap-2">
+                                    <button
+                                        onClick={() => {
+                                            props.setEditWindow(true);
+                                            props.setEditData(blog);
+                                            props.setBlogId(blog._id);
+                                        }}
+                                        className="bg-blue-200 hover:bg-blue-300 p-2 rounded cursor-pointer flex-1 text-center"
+                                    >
+                                        Edit
+                                    </button>
+                                    <button
+                                        onClick={() => props.deleteHandler(blog._id)}
+                                        className="bg-red-200 hover:bg-red-300 p-2 rounded cursor-pointer flex-1 text-center"
+                                    >
+                                        Delete
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    ))}
+                </div>
+            )}
         </div>
     );
 }
