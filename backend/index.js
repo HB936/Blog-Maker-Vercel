@@ -14,7 +14,7 @@ server.use('/api/blog', BlogsRouter);
 
 // Remove app.listen and instead export the handler for Vercel
 mongoose.connect(
-    "mongodb+srv://x4deadshot:hardikbhai92006@cluster0.h7haiys.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0",
+    "mongodb+srv://x4deadshot:mongodbpassword@cluster0.h7haiys.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0",
     {
         dbName: "RevoltronX"
     }
