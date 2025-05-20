@@ -7,7 +7,7 @@ const server = express();
 server.use(express.json());
 
 server.use(cors({
-    origin: ['http://localhost:5173']
+    origin: ['https://blog-maker-vercel.vercel.app']
 }));
 
 server.use('/api/blog', BlogsRouter);
