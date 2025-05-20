@@ -18,7 +18,7 @@ export default function Home() {
     const openToast = (msg, flag) => {
         toast(msg, {
             type: flag ? 'success' : 'error',
-            autoClose: 3000,     // Add this line to each toast call
+            autoClose: 3000,
             hideProgressBar: false,
             closeOnClick: true,
             pauseOnHover: true,
@@ -103,22 +103,22 @@ export default function Home() {
 function BlogTable(props) {
     return (
         <div className="max-w-6xl mx-auto mt-8 overflow-x-auto">
-            <table className="min-w-full bg-white shadow rounded table-auto">
+            <table className="min-w-full bg-white shadow rounded table-fixed">
                 <thead>
                     <tr className="bg-gray-200 text-gray-700 uppercase text-sm leading-normal">
-                        <th className="py-3 px-6 text-left">Title</th>
-                        <th className="py-3 px-6 text-left">Content</th>
-                        <th className="py-3 px-6 text-left">Tags</th>
-                        <th className="py-3 px-6 text-left">Status</th>
-                        <th className="py-3 px-6 text-left">Created At</th>
-                        <th className="py-3 px-6 text-left">Updated At</th>
-                        <th className="py-3 px-6 text-left">Actions</th>
+                        <th className="py-3 px-6 text-left w-1/6">Title</th>
+                        <th className="py-3 px-6 text-left w-2/6">Content</th>
+                        <th className="py-3 px-6 text-left w-1/6">Tags</th>
+                        <th className="py-3 px-6 text-left w-1/12">Status</th>
+                        <th className="py-3 px-6 text-left w-1/12">Created At</th>
+                        <th className="py-3 px-6 text-left w-1/12">Updated At</th>
+                        <th className="py-3 px-6 text-left w-1/6">Actions</th>
                     </tr>
                 </thead>
                 <tbody className="text-gray-600 text-sm">
                     {props.blogs.length === 0 ? (
                         <tr>
-                            <td colSpan="6" className="text-center py-6">
+                            <td colSpan="7" className="text-center py-6">
                                 No blogs found.
                             </td>
                         </tr>
@@ -128,9 +128,13 @@ function BlogTable(props) {
                                 key={blog._id}
                                 className="border-b border-gray-200 hover:bg-gray-100 align-top"
                             >
-                                <td className="py-3 px-6 align-top">{blog.title}</td>
-                                <td className="py-3 px-6 whitespace-normal align-top">{blog.content}</td>
-                                <td className="py-3 px-6 align-top">{Array.isArray(blog.tags) ? blog.tags.join(', ') : blog.tags}</td>
+                                <td className="py-3 px-6 align-top break-words">{blog.title}</td>
+                                <td className="py-3 px-6 align-top">
+                                    <div className="max-h-60 overflow-y-auto break-words">
+                                        {blog.content}
+                                    </div>
+                                </td>
+                                <td className="py-3 px-6 align-top break-words">{Array.isArray(blog.tags) ? blog.tags.join(', ') : blog.tags}</td>
                                 <td className="py-3 px-6 align-top">{blog.status}</td>
                                 <td className="py-3 px-6 align-top">
                                     {new Date(blog.createdAt).toLocaleDateString()}
