@@ -44,15 +44,24 @@ export default function Drafts() {
             });
     };
 
+    // Handle closing the edit window
+    const handleCloseEditWindow = () => {
+        setEditWindow(false);
+        // Refresh drafts when the edit window is closed
+        fetchDrafts();
+    };
+
     return (
         <>
-            <ToastContainer position="top-right"
+            <ToastContainer
+                position="top-right"
                 autoClose={3000}
                 closeOnClick
                 pauseOnHover
                 pauseOnFocusLoss={false}
                 draggable
-                toastClassName="z-[9999]" />
+                toastClassName="z-[9999]"
+            />
             <div>
                 <div className={`fixed inset-0 bg-black bg-opacity-25 ${editWindow ? 'flex' : 'hidden'} items-center justify-center z-50`}>
                     <div className="w-[600px] relative">
@@ -63,57 +72,111 @@ export default function Drafts() {
                             editData={editData}
                             blogId={blogId}
                         />
-                        <div onClick={() => setEditWindow(false)} className='cursor-pointer absolute w-[40px] h-[40px] flex ps-[15px] items-center bg-red-400 top-0 right-0 rounded-full'>
+                        <div
+                            onClick={handleCloseEditWindow}
+                            className='cursor-pointer absolute w-[40px] h-[40px] flex ps-[15px] items-center bg-red-400 top-0 right-0 rounded-full'
+                        >
                             X
                         </div>
                     </div>
                 </div>
-                <DraftTable drafts={drafts} setEditWindow={setEditWindow} setBlogId={setBlogId} setEditData={setEditData} deleteHandler={deleteHandler} />
+                <DraftTable
+                    drafts={drafts}
+                    setEditWindow={setEditWindow}
+                    setBlogId={setBlogId}
+                    setEditData={setEditData}
+                    deleteHandler={deleteHandler}
+                />
             </div>
         </>
     );
 }
 
-function DraftTable({ drafts, setEditWindow, setBlogId, setEditData, deleteHandler }) {
+function DraftTable(props) {
     return (
-        <div className="max-w-6xl mx-auto mt-8 overflow-x-auto">
-            <table className="min-w-full bg-white shadow rounded table-auto">
-                <thead>
-                    <tr className="bg-gray-200 text-gray-700 uppercase text-sm leading-normal">
-                        <th className="py-3 px-6 text-left">Title</th>
-                        <th className="py-3 px-6 text-left">Content</th>
-                        <th className="py-3 px-6 text-left">Tags</th>
-                        <th className="py-3 px-6 text-left">Status</th>
-                        <th className="py-3 px-6 text-left">Created At</th>
-                        <th className="py-3 px-6 text-left">Updated At</th>
-                        <th className="py-3 px-6 text-left">Actions</th>
-                    </tr>
-                </thead>
-                <tbody className="text-gray-600 text-sm">
-                    {drafts.length === 0 ? (
-                        <tr>
-                            <td colSpan="7" className="text-center py-6">
-                                No drafts found.
-                            </td>
+        <div className="max-w-6xl mx-auto mt-8">
+            <div className="overflow-hidden rounded-lg shadow-lg">
+                <table className="w-full table-fixed border-collapse">
+                    <thead>
+                        <tr className="bg-gray-200 text-gray-700 uppercase text-sm leading-normal">
+                            <th className="py-3 px-2 text-left w-24 md:w-32">Title</th>
+                            <th className="py-3 px-2 text-left w-64 md:w-80">Content</th>
+                            <th className="py-3 px-2 text-left w-32">Tags</th>
+                            <th className="py-3 px-2 text-left w-20">Status</th>
+                            <th className="py-3 px-2 text-left w-24">Created</th>
+                            <th className="py-3 px-2 text-left w-24">Updated</th>
+                            <th className="py-3 px-2 text-left w-32">Actions</th>
                         </tr>
-                    ) : (
-                        drafts.map((draft) => (
-                            <tr key={draft._id} className="border-b border-gray-200 hover:bg-gray-100 align-top">
-                                <td className="py-3 px-6 align-top">{draft.title}</td>
-                                <td className="py-3 px-6 whitespace-normal align-top">{draft.content}</td>
-                                <td className="py-3 px-6 align-top">{Array.isArray(draft.tags) ? draft.tags.join(', ') : draft.tags}</td>
-                                <td className="py-3 px-6 align-top">{draft.status}</td>
-                                <td className="py-3 px-6 align-top">{new Date(draft.createdAt).toLocaleDateString()}</td>
-                                <td className="py-3 px-6 align-top">{new Date(draft.updatedAt).toLocaleDateString()}</td>
-                                <td className="py-3 px-6 align-top flex gap-4">
-                                    <button onClick={() => { setEditWindow(true); setEditData(draft); setBlogId(draft._id); }} className='bg-blue-200 p-2 rounded cursor-pointer'>Edit</button>
-                                    <button onClick={() => deleteHandler(draft._id)} className='bg-red-200 p-2 rounded cursor-pointer'>Delete</button>
+                    </thead>
+                    <tbody className="text-gray-600 text-sm">
+                        {props.drafts.length === 0 ? (
+                            <tr>
+                                <td colSpan="7" className="text-center py-6">
+                                    No drafts found.
                                 </td>
                             </tr>
-                        ))
-                    )}
-                </tbody>
-            </table>
+                        ) : (
+                            props.drafts.map((draft) => (
+                                <tr
+                                    key={draft._id}
+                                    className="border-b border-gray-200 hover:bg-gray-100"
+                                >
+                                    <td className="py-2 px-2 align-top">
+                                        <div className="w-full overflow-hidden break-words">
+                                            {draft.title}
+                                        </div>
+                                    </td>
+                                    <td className="py-2 px-2 align-top">
+                                        <div className="w-full max-h-60 overflow-y-auto whitespace-normal break-words">
+                                            {draft.content}
+                                        </div>
+                                    </td>
+                                    <td className="py-2 px-2 align-top">
+                                        <div className="w-full overflow-hidden break-words">
+                                            {Array.isArray(draft.tags) ? draft.tags.join(', ') : draft.tags}
+                                        </div>
+                                    </td>
+                                    <td className="py-2 px-2 align-top">
+                                        <div className="w-full overflow-hidden">
+                                            {draft.status}
+                                        </div>
+                                    </td>
+                                    <td className="py-2 px-2 align-top">
+                                        <div className="w-full overflow-hidden">
+                                            {new Date(draft.createdAt).toLocaleDateString()}
+                                        </div>
+                                    </td>
+                                    <td className="py-2 px-2 align-top">
+                                        <div className="w-full overflow-hidden">
+                                            {new Date(draft.updatedAt).toLocaleDateString()}
+                                        </div>
+                                    </td>
+                                    <td className="py-2 px-2 align-top">
+                                        <div className="flex flex-col md:flex-row gap-2">
+                                            <button
+                                                onClick={() => {
+                                                    props.setEditWindow(true);
+                                                    props.setEditData(draft);
+                                                    props.setBlogId(draft._id);
+                                                }}
+                                                className='bg-blue-200 p-2 rounded cursor-pointer text-center'
+                                            >
+                                                Edit
+                                            </button>
+                                            <button
+                                                onClick={() => props.deleteHandler(draft._id)}
+                                                className='bg-red-200 p-2 rounded cursor-pointer text-center'
+                                            >
+                                                Delete
+                                            </button>
+                                        </div>
+                                    </td>
+                                </tr>
+                            ))
+                        )}
+                    </tbody>
+                </table>
+            </div>
         </div>
     );
 }
