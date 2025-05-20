@@ -102,69 +102,89 @@ export default function Home() {
 
 function BlogTable(props) {
     return (
-        <div className="max-w-6xl mx-auto mt-8 overflow-x-auto">
-            <table className="min-w-full bg-white shadow rounded table-fixed">
-                <thead>
-                    <tr className="bg-gray-200 text-gray-700 uppercase text-sm leading-normal">
-                        <th className="py-3 px-6 text-left w-1/6">Title</th>
-                        <th className="py-3 px-6 text-left w-2/6">Content</th>
-                        <th className="py-3 px-6 text-left w-1/6">Tags</th>
-                        <th className="py-3 px-6 text-left w-1/12">Status</th>
-                        <th className="py-3 px-6 text-left w-1/12">Created At</th>
-                        <th className="py-3 px-6 text-left w-1/12">Updated At</th>
-                        <th className="py-3 px-6 text-left w-1/6">Actions</th>
-                    </tr>
-                </thead>
-                <tbody className="text-gray-600 text-sm">
-                    {props.blogs.length === 0 ? (
-                        <tr>
-                            <td colSpan="7" className="text-center py-6">
-                                No blogs found.
-                            </td>
+        <div className="max-w-6xl mx-auto mt-8">
+            <div className="overflow-hidden border rounded-lg shadow">
+                <table className="w-full table-fixed border-collapse">
+                    <thead>
+                        <tr className="bg-gray-200 text-gray-700 uppercase text-sm leading-normal">
+                            <th className="py-3 px-2 text-left w-24 md:w-32">Title</th>
+                            <th className="py-3 px-2 text-left w-64 md:w-80">Content</th>
+                            <th className="py-3 px-2 text-left w-32">Tags</th>
+                            <th className="py-3 px-2 text-left w-20">Status</th>
+                            <th className="py-3 px-2 text-left w-24">Created</th>
+                            <th className="py-3 px-2 text-left w-24">Updated</th>
+                            <th className="py-3 px-2 text-left w-32">Actions</th>
                         </tr>
-                    ) : (
-                        props.blogs.map((blog) => (
-                            <tr
-                                key={blog._id}
-                                className="border-b border-gray-200 hover:bg-gray-100 align-top"
-                            >
-                                <td className="py-3 px-6 align-top break-words">{blog.title}</td>
-                                <td className="py-3 px-6 align-top">
-                                    <div className="max-h-60 overflow-y-auto break-words">
-                                        {blog.content}
-                                    </div>
-                                </td>
-                                <td className="py-3 px-6 align-top break-words">{Array.isArray(blog.tags) ? blog.tags.join(', ') : blog.tags}</td>
-                                <td className="py-3 px-6 align-top">{blog.status}</td>
-                                <td className="py-3 px-6 align-top">
-                                    {new Date(blog.createdAt).toLocaleDateString()}
-                                </td>
-                                <td className="py-3 px-6 align-top">
-                                    {new Date(blog.updatedAt).toLocaleDateString()}
-                                </td>
-                                <td className="py-3 px-6 align-top flex gap-4">
-                                    <button
-                                        onClick={() => {
-                                            props.setEditWindow(true);
-                                            props.setEditData(blog);
-                                            props.setBlogId(blog._id);
-                                        }}
-                                        className='bg-blue-200 p-2 rounded cursor-pointer'
-                                    >
-                                        Edit
-                                    </button>
-                                    <button
-                                        onClick={() => props.deleteHandler(blog._id)}
-                                        className='bg-red-200 p-2 rounded cursor-pointer'
-                                    >
-                                        Delete
-                                    </button>
+                    </thead>
+                    <tbody className="text-gray-600 text-sm">
+                        {props.blogs.length === 0 ? (
+                            <tr>
+                                <td colSpan="7" className="text-center py-6">
+                                    No blogs found.
                                 </td>
                             </tr>
-                        ))
-                    )}
-                </tbody>
-            </table>
+                        ) : (
+                            props.blogs.map((blog) => (
+                                <tr
+                                    key={blog._id}
+                                    className="border-b border-gray-200 hover:bg-gray-100"
+                                >
+                                    <td className="py-2 px-2 align-top">
+                                        <div className="w-full overflow-hidden break-words">
+                                            {blog.title}
+                                        </div>
+                                    </td>
+                                    <td className="py-2 px-2 align-top">
+                                        <div className="w-full max-h-60 overflow-y-auto whitespace-normal break-words">
+                                            {blog.content}
+                                        </div>
+                                    </td>
+                                    <td className="py-2 px-2 align-top">
+                                        <div className="w-full overflow-hidden break-words">
+                                            {Array.isArray(blog.tags) ? blog.tags.join(', ') : blog.tags}
+                                        </div>
+                                    </td>
+                                    <td className="py-2 px-2 align-top">
+                                        <div className="w-full overflow-hidden">
+                                            {blog.status}
+                                        </div>
+                                    </td>
+                                    <td className="py-2 px-2 align-top">
+                                        <div className="w-full overflow-hidden">
+                                            {new Date(blog.createdAt).toLocaleDateString()}
+                                        </div>
+                                    </td>
+                                    <td className="py-2 px-2 align-top">
+                                        <div className="w-full overflow-hidden">
+                                            {new Date(blog.updatedAt).toLocaleDateString()}
+                                        </div>
+                                    </td>
+                                    <td className="py-2 px-2 align-top">
+                                        <div className="flex flex-col md:flex-row gap-2">
+                                            <button
+                                                onClick={() => {
+                                                    props.setEditWindow(true);
+                                                    props.setEditData(blog);
+                                                    props.setBlogId(blog._id);
+                                                }}
+                                                className='bg-blue-200 p-2 rounded cursor-pointer text-center'
+                                            >
+                                                Edit
+                                            </button>
+                                            <button
+                                                onClick={() => props.deleteHandler(blog._id)}
+                                                className='bg-red-200 p-2 rounded cursor-pointer text-center'
+                                            >
+                                                Delete
+                                            </button>
+                                        </div>
+                                    </td>
+                                </tr>
+                            ))
+                        )}
+                    </tbody>
+                </table>
+            </div>
         </div>
     );
 }
