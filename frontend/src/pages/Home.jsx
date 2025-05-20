@@ -27,7 +27,7 @@ export default function Home() {
     };
 
     const deleteHandler = (id) => {
-        axios.delete(`https://blog-maker-vercel.vercel.app/api/blog/delete/${id}`)
+        axios.delete(`https://blog-maker-vercel-backend.vercel.app/api/blog/delete/${id}`)
             .then((success) => {
                 if (success.data.status == 1) {
                     fetchBlogs();
@@ -40,7 +40,7 @@ export default function Home() {
     };
 
     const fetchBlogs = () => {
-        axios.get("https://blog-maker-vercel.vercel.app/api/blog")
+        axios.get("https://blog-maker-vercel-backend.vercel.app/api/blog")
             .then((success) => {
                 if (success.data.status == 1) {
                     const publishedBlogs = success.data.blogs.filter(blog => blog.status === 'published');
