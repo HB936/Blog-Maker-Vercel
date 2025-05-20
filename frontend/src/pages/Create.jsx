@@ -66,10 +66,10 @@ export default function Create() {
             
             // If we have a draft ID, update it
             if (draftId) {
-                response = await axios.patch(`http://localhost:5000/api/blog/update/${draftId}`, data);
+                response = await axios.patch(`https://blog-maker-vercel-backend.vercel.app/api/blog/update/${draftId}`, data);
             } else {
                 // Otherwise create a new draft
-                response = await axios.post('http://localhost:5000/api/blog/save-draft', data);
+                response = await axios.post('https://blog-maker-vercel-backend.vercel.app/api/blog/save-draft', data);
                 
                 // Store the draft ID for future updates
                 if (response.data.id) {
@@ -132,8 +132,8 @@ export default function Create() {
 
         try {
             const url = status === 'published'
-                ? 'http://localhost:5000/api/blog/publish'
-                : 'http://localhost:5000/api/blog/save-draft';
+                ? 'https://blog-maker-vercel-backend.vercel.app/api/blog/publish'
+                : 'https://blog-maker-vercel-backend.vercel.app/api/blog/save-draft';
 
             const response = await axios.post(url, data);
             
@@ -141,7 +141,7 @@ export default function Create() {
                 // If publishing, remove the draft
                 if (status === 'published' && draftId) {
                     try {
-                        await axios.delete(`http://localhost:5000/api/blog/delete-draft/${draftId}`);
+                        await axios.delete(`https://blog-maker-vercel-backend.vercel.app/api/blog/delete-draft/${draftId}`);
                     } catch (error) {
                         console.error("Error removing draft after publishing:", error);
                     }
